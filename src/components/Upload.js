@@ -2,7 +2,7 @@ import React from 'react';
 import Papa from 'papaparse';
 import api from '../services/api';
 
-class Main extends React.Component {
+class Upload extends React.Component {
   constructor() {
     super();
     this.state = {
