@@ -1,5 +1,6 @@
 import React from 'react';
 import Papa from 'papaparse';
+import api from '../services/api';
 
 class Main extends React.Component {
   constructor() {
@@ -10,6 +11,8 @@ class Main extends React.Component {
   };
 
   handleUpload = ev => {
+    ev.preventDefault();
+
     const { csvfile } = this.state;
 
     Papa.parse(csvfile, {
@@ -20,6 +23,20 @@ class Main extends React.Component {
 
   handleUploadComplete = result => {
     result.data.forEach(entry => {
+
+      let config = {headers: {'Content-Type': 'application/json'}};
+      let data = {};
+
+      data.description = entry.title;
+      data.category = entry.category;
+      data.date = entry.date;
+      data.source = 'nubank';
+      data.value = entry.amount;
+
+      api.post('expenses', data, config)
+      .then( (res) => console.log(res) ,
+             () => console.log('errrrouuuu')
+      );
 
     });
   };
