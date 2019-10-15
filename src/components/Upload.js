@@ -22,7 +22,7 @@ class Upload extends React.Component {
   };
 
   handleUploadComplete = result => {
-    result.data.forEach(entry => {
+    Promise.all(result.data.map(entry => {
 
       let config = {headers: {'Content-Type': 'application/json'}};
       let data = {};
@@ -33,12 +33,9 @@ class Upload extends React.Component {
       data.source = 'nubank';
       data.value = entry.amount;
 
-      api.post('expenses', data, config)
-      .then( (res) => console.log(res) ,
-             () => console.log('errrrouuuu')
-      );
+      return api.post('expenses', data, config)
 
-    });
+    }));
   };
 
   handleInputChange = ev => {
@@ -66,4 +63,4 @@ class Upload extends React.Component {
   }
 }
 
-export default Main;
+export default Upload;
